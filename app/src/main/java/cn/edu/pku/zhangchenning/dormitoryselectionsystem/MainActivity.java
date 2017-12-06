@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText et_username,et_password;
     private static final int  LOG_SUCCESS=1;
     private String stu_id;
+    private TextView password;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         bt_go= (Button) findViewById(R.id.bt_go);
         bt_go.setOnClickListener(this);
+
+        password= (TextView) findViewById(R.id.password);
+        password.setOnClickListener(this);
 
         et_username= (EditText) findViewById(R.id.et_username);
         et_password= (EditText) findViewById(R.id.et_password);
@@ -123,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
             ).start();
+        }
+        if (v.getId()==R.id.password){
+            Intent i = new Intent(MainActivity.this, PasswordActivity.class);
+            startActivity(i);
         }
     }
 

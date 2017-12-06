@@ -25,7 +25,8 @@
         <activity android:name=".ChaxunsusheActivity" />
         <activity android:name=".XuansusheActivity" />
         <activity android:name=".SuccActivity" />
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".MapActivity" />
+        <activity android:name=".PasswordActivity"></activity>
     </application>
 
 </manifest>

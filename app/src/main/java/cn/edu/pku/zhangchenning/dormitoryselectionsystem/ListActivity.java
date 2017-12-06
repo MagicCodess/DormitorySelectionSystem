@@ -27,7 +27,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class ListActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button bt_chaxungeren,bt_chaxunchuangwei,bt_xuanzesushe,bt_map;
+    private Button bt_chaxungeren,bt_chaxunchuangwei,bt_xuanzesushe,bt_map,bt_logoff;
     private String stu_id;
     private Student stu;
     private Dorm dorm;
@@ -40,10 +40,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         bt_chaxunchuangwei= (Button) findViewById(R.id.bt_chaxunchuangwei);
         bt_xuanzesushe= (Button) findViewById(R.id.bt_xuanzesushe);
         bt_map= (Button) findViewById(R.id.bt_map);
+        bt_logoff= (Button) findViewById(R.id.bt_logoff);
         bt_chaxungeren.setOnClickListener(this);
         bt_chaxunchuangwei.setOnClickListener(this);
         bt_xuanzesushe.setOnClickListener(this);
         bt_map.setOnClickListener(this);
+        bt_logoff.setOnClickListener(this);
 
         getInfo();
     }
@@ -92,61 +94,41 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                                 stu.setName(stuinfos.getString("name"));
                                 stu.setGender(stuinfos.getString("gender"));
                                 stu.setVcode(stuinfos.getString("vcode"));
-                                stu.setRoom(stuinfos.getString("room"));
-                                stu.setBuilding(stuinfos.getString("building"));
-                                stu.setLocation(stuinfos.getString("location"));
-                                stu.setGrade(stuinfos.getString("grade"));
+                               // stu.setRoom(stuinfos.getString("room"));
+//                                stu.setBuilding(stuinfos.getString("building"));
+//                                stu.setLocation(stuinfos.getString("location"));
+//                                stu.setGrade(stuinfos.getString("grade"));
                             }
 
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }finally {
-                            if(con!=null){
-                                con.disconnect();
-                            }
-                        }
-                    }
-                }
-        ).start();
-
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        HttpsURLConnection con = null;
-                        try{
-
-                            SSLContext sc = SSLContext.getInstance("TLS");
-                            sc.init(null, new TrustManager[]{new ListActivity.MyTrustManager()}, new SecureRandom());
-                            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                            HttpsURLConnection.setDefaultHostnameVerifier(new ListActivity.MyHostnameVerifier());
                             String address2 = "https://api.mysspku.com/index.php/V1/MobileCourse/getRoom?gender=1";
-                            if (stu.getGender()=="女"){
+                            System.out.print(stu.getGender());
+                            if (stu.getGender().equals("女")){
                                 address2 = "https://api.mysspku.com/index.php/V1/MobileCourse/getRoom?gender=2";
+                                System.out.print(stu.getGender());
                             }
-                            URL url = new URL(address2);
-                            con = (HttpsURLConnection)url.openConnection();
+                            URL url2 = new URL(address2);
+                            con = (HttpsURLConnection)url2.openConnection();
                             con.setRequestMethod("GET");
                             con.setConnectTimeout(8000);
                             con.setReadTimeout(8000);
-                            InputStream in = con.getInputStream();
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                            StringBuilder response = new StringBuilder();
-                            String str;
-                            while ((str=reader.readLine())!=null){
-                                response.append(str);
-                                System.out.println(str);
+                            InputStream in2 = con.getInputStream();
+                            BufferedReader reader2 = new BufferedReader(new InputStreamReader(in2));
+                            StringBuilder response2 = new StringBuilder();
+                            String str2;
+                            while ((str2=reader2.readLine())!=null){
+                                response2.append(str2);
+                                System.out.println(str2);
                             }
 
-                            JSONTokener jsonParser = new JSONTokener(response.toString());
+                            JSONTokener jsonParser3 = new JSONTokener(response2.toString());
 // 此时还未读取任何json文本，直接读取就是一个JSONObject对象。
-                            JSONObject stuinfos1 = (JSONObject) jsonParser.nextValue();
+                            JSONObject stuinfos12 = (JSONObject) jsonParser3.nextValue();
 // 接下来的就是JSON对象的操作了
-                            int errcode=Integer.parseInt(stuinfos1.getString("errcode"));
-                            String info=stuinfos1.getString("data");
-                            JSONTokener jsonParser2 = new JSONTokener(info);
-                            JSONObject dorminfo = (JSONObject) jsonParser2.nextValue();
-                            if (errcode==0){
+                            int errcode2=Integer.parseInt(stuinfos12.getString("errcode"));
+                            String info2=stuinfos12.getString("data");
+                            JSONTokener jsonParser22 = new JSONTokener(info2);
+                            JSONObject dorminfo = (JSONObject) jsonParser22.nextValue();
+                            if (errcode2==0){
                                 dorm.setWu(dorminfo.getInt("5"));
                                 dorm.setShisan(dorminfo.getInt("13"));
                                 dorm.setShisi(dorminfo.getInt("14"));
@@ -164,6 +146,31 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
         ).start();
+
+//        new Thread(
+//                new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        HttpsURLConnection con = null;
+//
+//                        try{
+//                            Thread.sleep(1500);
+//                            SSLContext sc = SSLContext.getInstance("TLS");
+//                            sc.init(null, new TrustManager[]{new ListActivity.MyTrustManager()}, new SecureRandom());
+//                            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//                            HttpsURLConnection.setDefaultHostnameVerifier(new ListActivity.MyHostnameVerifier());
+//
+//
+//                        }catch (Exception e){
+//                            e.printStackTrace();
+//                        }finally {
+//                            if(con!=null){
+//                                con.disconnect();
+//                            }
+//                        }
+//                    }
+//                }
+//        ).start();
     }
 
 
@@ -184,6 +191,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId()==R.id.bt_map){
             Intent i = new Intent(ListActivity.this, MapActivity.class);
             startActivity(i);
+        }
+        if (v.getId()==R.id.bt_logoff){
+            Intent i = new Intent(ListActivity.this, MainActivity.class);
+            stu=null;
+            startActivity(i);
+            finish();
         }
     }
     class MyTrustManager implements X509TrustManager

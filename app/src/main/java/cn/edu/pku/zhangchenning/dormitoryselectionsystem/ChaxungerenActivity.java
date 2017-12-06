@@ -45,20 +45,20 @@ public class ChaxungerenActivity extends AppCompatActivity implements View.OnCli
         name= (TextView) findViewById(R.id.name);
         gender= (TextView) findViewById(R.id.gender);
         vcode= (TextView) findViewById(R.id.vcode);
-        room= (TextView) findViewById(R.id.room);
-        building= (TextView) findViewById(R.id.building);
-        location= (TextView) findViewById(R.id.location);
-        grade= (TextView) findViewById(R.id.grade);
+//        room= (TextView) findViewById(R.id.room);
+//        building= (TextView) findViewById(R.id.building);
+//        location= (TextView) findViewById(R.id.location);
+//        grade= (TextView) findViewById(R.id.grade);
 
         stu=MyApplication.getInstance().getStudent();
         studentid.setText(stu.getStudentid());
         name.setText(stu.getName());
         gender.setText(stu.getGender());
         vcode.setText(stu.getVcode());
-        building.setText(stu.getBuilding());
-        room.setText(stu.getRoom());
-        location.setText(stu.getLocation());
-        grade.setText(stu.getGrade());
+//        building.setText(stu.getBuilding());
+//        room.setText(stu.getRoom());
+//        location.setText(stu.getLocation());
+//        grade.setText(stu.getGrade());
 
     }
 
