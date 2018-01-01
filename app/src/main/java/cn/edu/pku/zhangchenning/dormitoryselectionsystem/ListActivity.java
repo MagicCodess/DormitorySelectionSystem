@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -46,8 +47,9 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         bt_xuanzesushe.setOnClickListener(this);
         bt_map.setOnClickListener(this);
         bt_logoff.setOnClickListener(this);
-
-        getInfo();
+        stu=MyApplication.getInstance().getStudent();
+        dorm=MyApplication.getInstance().getDorm();
+        //getInfo();
     }
 
     public void getInfo() {
@@ -94,8 +96,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                                 stu.setName(stuinfos.getString("name"));
                                 stu.setGender(stuinfos.getString("gender"));
                                 stu.setVcode(stuinfos.getString("vcode"));
-                               // stu.setRoom(stuinfos.getString("room"));
-//                                stu.setBuilding(stuinfos.getString("building"));
+                                stu.setRoom(stuinfos.getString("room"));
+                                stu.setBuilding(stuinfos.getString("building"));
 //                                stu.setLocation(stuinfos.getString("location"));
 //                                stu.setGrade(stuinfos.getString("grade"));
                             }
@@ -185,8 +187,14 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(i);
         }
         if (v.getId()==R.id.bt_xuanzesushe){
-            Intent i = new Intent(ListActivity.this, XuansusheActivity.class);
-            startActivity(i);
+            //if(Integer.parseInt(stu.getStudentid())%2==1){
+            if(stu.getRoom()==null){
+                Intent i = new Intent(ListActivity.this, XuansusheActivity.class);
+                startActivity(i);
+            }else{
+                Toast.makeText(ListActivity.this, "您已选择宿舍"+stu.getBuilding()+"号楼"+stu.getRoom(), Toast.LENGTH_LONG).show();
+            }
+
         }
         if (v.getId()==R.id.bt_map){
             Intent i = new Intent(ListActivity.this, MapActivity.class);
